@@ -29,4 +29,9 @@ module SessionsHelper
   def signed_in?
     !current_user.nil?
   end
+
+  # This has been moved from the user controller as we need it in the microposts controller as well
+  def signed_in_user
+    redirect_to signin_url, notice: "Please signin." unless signed_in?
+  end
 end

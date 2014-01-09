@@ -25,6 +25,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def edit
@@ -45,15 +46,18 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+
+
   private
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
-    def signed_in_user
-        redirect_to signin_url, notice: "Please signin." unless signed_in?
-    end
+    # This has been moved to the sessions helper as we need it in the microposts controller as well
+    # def signed_in_user
+    #     redirect_to signin_url, notice: "Please signin." unless signed_in?
+    # end
 
     def correct_user
       @user = User.find(params[:id])

@@ -1,11 +1,27 @@
 <% provide(:title, 'Home') %>
-<div class="center hero-unit">
-  <h1>Welcome to the Rails Tut</h1>
-  <h2>
-    Learn Ruby on Rails
-  </h2>
-  <p>
-    Sign in, or join up now!
-  </p>
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
-</div>
+<% if signed_in? %>
+  <div class="row">
+    <aside class="span4">
+      <section>
+        <%= render 'shared/user_info' %>
+      </section>
+      <section>
+        <%= render 'shared/micropost_form' %>
+      </section>
+    </aside>
+    <div class="span8">
+      <%= render 'shared/feed' %>
+    </div>
+  </div>
+<% else %>
+  <div class="center hero-unit">
+    <h1>Welcome to the Rails Tut</h1>
+    <h2>
+      Learn Ruby on Rails
+    </h2>
+    <p>
+      Sign in, or join up now!
+    </p>
+    <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>
