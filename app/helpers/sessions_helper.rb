@@ -30,8 +30,19 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    session.delete(:return_to)
+  end
+
+  def store_location
+    session[:return_to] = request.url if request.get?
+  end
+
+
   # This has been moved from the user controller as we need it in the microposts controller as well
   def signed_in_user
+    store_location
     redirect_to signin_url, notice: "Please signin." unless signed_in?
   end
 end

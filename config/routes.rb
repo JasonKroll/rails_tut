@@ -5,7 +5,7 @@ RailsTut::Application.routes.draw do
   get "microposts/destroy"
   resources :users do
      member do
-      get :following, :followers
+      get :following, :followers, :toggle_admin
      end
   end
   resources :relationships, only: [:create, :destroy]

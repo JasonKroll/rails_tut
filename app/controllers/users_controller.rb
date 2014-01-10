@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :signed_in_user, only: [:index, :edit, :update]
+  before_action :signed_in_user, only: [:index, :edit, :update, :toggle_admin]
   before_action :correct_user, only: [:edit, :update]
-  before_action :admin_user, only: :destroy
+  before_action :admin_user, only: [:destroy, :toggle_admin]
   before_action :not_signed_in, only: [:create, :new]
 
   def index
@@ -58,6 +58,21 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
+  end
+
+  def toggle_admin
+    @user = User.find(params[:id])
+    unless current_user?(@user)
+      if @user.admin?
+        @user.update_attributes(admin: false)
+      else
+        @user.update_attributes(admin: true)
+      end
+      respond_to do |format|
+        format.html { redirect_to :back }
+        format.js
+      end
+    end
   end
 
   private
