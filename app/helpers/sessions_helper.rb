@@ -2,6 +2,13 @@ module SessionsHelper
 
   def sign_in(user)
     remember_token = User.new_remember_token
+    cookies[:remember_token] = remember_token
+    user.update_attribute(:remember_token, User.encrypt(remember_token))
+    self.current_user = user
+  end
+
+  def sign_in_remember_me(user)
+    remember_token = User.new_remember_token
     cookies.permanent[:remember_token] = remember_token
     user.update_attribute(:remember_token, User.encrypt(remember_token))
     self.current_user = user
@@ -31,7 +38,12 @@ module SessionsHelper
   end
 
   def redirect_back_or(default)
-    redirect_to(session[:return_to] || default)
+    # redirect_to default
+    unless session[:return_to] == signin_path
+      redirect_to(session[:return_to] || default)
+    else
+      redirect_to(default)
+    end
     session.delete(:return_to)
   end
 
@@ -39,6 +51,9 @@ module SessionsHelper
     session[:return_to] = request.url if request.get?
   end
 
+  def delete_location
+    session[:return_to].delete
+  end
 
   # This has been moved from the user controller as we need it in the microposts controller as well
   def signed_in_user

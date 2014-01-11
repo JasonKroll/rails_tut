@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: [:destroy, :toggle_admin]
   before_action :not_signed_in, only: [:create, :new]
-
+  
   def index
     @users = User.paginate(page: params[:page], per_page: 20)
   end

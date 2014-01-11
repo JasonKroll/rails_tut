@@ -6,6 +6,14 @@
     <%= f.text_field :email %>
     <%= f.label :password %>
     <%= f.password_field :password %>
-    <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+    <div class="chk">
+      <%= check_box_tag :remember_me, 1, params[:remember_me] %>
+      <%= f.label :remember_me, class: "chk" %>
+    </div>
+    <br>
+    <br>
+    <div>
+      <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+    </div>
   <% end %>
 </div>

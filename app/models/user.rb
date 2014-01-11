@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 
   before_save { self.email = email.downcase }
   before_create :create_remember_token
+  # before_create { :generate_token(:auth_token) }
 
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -17,6 +18,7 @@ class User < ActiveRecord::Base
 
   has_secure_password
   validates :email, length: { minimum: 6 }
+
 
   def User.new_remember_token
     SecureRandom.urlsafe_base64
@@ -38,9 +40,17 @@ class User < ActiveRecord::Base
   def following?(other_user)
     relationships.find_by(followed_id: other_user.id)
   end
+
   def unfollow!(other_user)
     relationships.find_by(followed_id: other_user.id).destroy!
   end
+
+  # def generate_token(column)
+  #   begin
+  #     self[column] = SecureRandom.urlsafe_base64
+  #   end while User.exists?(column => self[column])
+  # end
+
 private
   def create_remember_token
     self.remember_token = User.encrypt(User.new_remember_token)
