@@ -8,6 +8,7 @@ RailsTut::Application.routes.draw do
       get :following, :followers, :toggle_admin
      end
   end
+  resources :password_resets
   resources :relationships, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]

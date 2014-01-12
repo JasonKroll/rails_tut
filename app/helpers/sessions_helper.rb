@@ -21,7 +21,7 @@ module SessionsHelper
   end
 
   def current_user=(user)
-    @current_user = user  
+    @current_user = user
   end
 
   def current_user
@@ -36,15 +36,24 @@ module SessionsHelper
   def signed_in?
     !current_user.nil?
   end
+  
+  def valid_password_reset(user)
+    @user.password_reset_sent_at > 2.hours.ago
+  end
+
+  def clear_password_reset(user)
+    @user.update_attribute(:password_reset_token, nil)
+    @user.update_attribute(:password_reset_sent_at, nil)
+  end
 
   def redirect_back_or(default)
     # redirect_to default
-    unless session[:return_to] == signin_path
-      redirect_to(session[:return_to] || default)
-    else
+    if session[:return_to] == signin_path
       redirect_to(default)
+    else
+      redirect_to(session[:return_to] || default)
     end
-    session.delete(:return_to)
+    delete_location
   end
 
   def store_location
@@ -52,12 +61,16 @@ module SessionsHelper
   end
 
   def delete_location
-    session[:return_to].delete
+    session.delete(:return_to)
   end
 
   # This has been moved from the user controller as we need it in the microposts controller as well
   def signed_in_user
-    store_location
-    redirect_to signin_url, notice: "Please signin." unless signed_in?
+    if signed_in?
+      delete_location
+    else
+      store_location
+      redirect_to signin_url, notice: "Please signin."
+    end
   end
 end
