@@ -1,0 +1,15 @@
+<% provide(:title, "Activate Account") %>
+<h1>Activate Account</h1>
+<div class="row">
+  <div class="center">
+    <h4>Your account has not yet been activated!</h4>
+    <p>You should have been sent an email with the link to activate the account.</p>
+    <p>If you wish to receive a new link, click the button below.</p>
+  <%= form_tag activations_path, method: :post do %>
+    <div>
+      <%= hidden_field_tag :email, params[:email] %>
+    </div> 
+    <%= submit_tag "Resend link", class: "btn btn-large btn-primary" %>
+  <% end %>
+  </div>
+</div>

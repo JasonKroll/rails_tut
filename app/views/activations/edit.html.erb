@@ -1,0 +1,14 @@
+<% provide(:title, "Account Activation") %>
+<h1>Activate Your Account</h1>
+<div class="row">
+  <div class="center">
+    <h4>Your account has not yet been activated!</h4>
+    <p>To activate your account please click the button below.</p>
+    <%= form_for @user, url: activation_path(params[:id]) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+          <%= f.hidden_field :name %>
+          <%= f.hidden_field :email %>
+          <%= f.submit "Activate", class: "btn btn-large btn-primary" %>
+        <% end %>
+      </div>
+</div>

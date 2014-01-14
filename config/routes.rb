@@ -9,6 +9,7 @@ RailsTut::Application.routes.draw do
      end
   end
   resources :password_resets
+  resources :activations
   resources :relationships, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]

@@ -36,6 +36,10 @@ module SessionsHelper
   def signed_in?
     !current_user.nil?
   end
+
+  def account_active
+    current_user.active
+  end
   
   def valid_password_reset(user)
     @user.password_reset_sent_at > 2.hours.ago

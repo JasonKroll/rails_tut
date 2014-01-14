@@ -9,6 +9,11 @@ class UserMailer < ActionMailer::Base
     mail(to: user.email, subject: "Your Registered on Garraway Twits")
   end
   
+  def account_activation(user)
+    @user = user
+    mail(to: user.email, subject: "Activate your account on Garraway Twits")
+  end
+
   def password_reset(user)
     @user = user
     mail(to: user.email, subject: "Password Reset")

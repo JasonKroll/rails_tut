@@ -57,12 +57,27 @@ class User < ActiveRecord::Base
     UserMailer.password_reset(self).deliver
   end
 
+  def send_account_activation
+    create_activation_token
+    save!
+    UserMailer.account_activation(self).deliver
+  end
+
+  def send_registration_confirmation
+    UserMailer.registration_confirmation(self).deliver
+  end
+
 private
   def create_remember_token
     self.remember_token = User.encrypt(User.new_remember_token)
   end
-
+  
   def create_password_reset_token
     self.password_reset_token = User.encrypt(User.new_remember_token)
   end
+
+  def create_activation_token
+    self.activation_token = User.encrypt(User.new_remember_token)
+  end  
+
 end

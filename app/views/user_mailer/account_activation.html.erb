@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+<p>
+  To start using Garraway Twits, you first need to activate your account. To activate click the link below.
+</p>
+<p>
+  <%= link_to "Activate your account.", edit_activation_url(@user.activation_token) %>
+</p>
+<p>
+  If you did not request your password to be reset, just ignore this email and your password will continue to stay the same.
+</p>
+</body>
+</html>

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: [:destroy, :toggle_admin]
   before_action :not_signed_in, only: [:create, :new]
-  
+
   def index
     @users = User.paginate(page: params[:page], per_page: 20)
   end
@@ -15,10 +15,12 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      UserMailer.registration_confirmation(@user).deliver
-      sign_in @user
-      flash[:success] = "Welcome to Rails Tut!"
-      redirect_to @user
+      @user.send_account_activation
+      redirect_to root_url, notice: "An email has been sent to you with an authorization link. Please check you email."  
+      # UserMailer.registration_confirmation(@user).deliver
+      # sign_in @user
+      # flash[:success] = "Welcome to Rails Tut!"
+      # redirect_to @user
     else
       render 'new'
     end
